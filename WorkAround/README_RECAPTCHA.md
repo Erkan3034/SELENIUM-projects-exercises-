@@ -21,13 +21,6 @@ Selenium ile Google'a erişmeye çalıştığınızda reCAPTCHA ile karşılaşa
 - Bu sürede manuel olarak reCAPTCHA'yı çözebilirsiniz
 
 ## Kullanım
-
-### Basit Versiyon (Önerilen)
-```bash
-python ap_simple.py
-```
-
-### Gelişmiş Versiyon
 ```bash
 python ap_improved.py
 ```
