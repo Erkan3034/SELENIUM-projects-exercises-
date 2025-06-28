@@ -8,9 +8,9 @@ url = "https://tr.wikipedia.org/wiki/%C4%B0stanbul"
 
 
 
-browser.get(url) # Sayfayı aç
+browser.get(url) # Sayfayı aç.
 
-time.sleep(5) # 10 saniye bekle 
+time.sleep(5) # 10 saniye bekle sayfadayken
 
 elements = browser.find_elements(By.CSS_SELECTOR, "div.mw-heading.mw-heading3 > h3") # h3 etiketini seç
 
