@@ -19,7 +19,7 @@ while pageCount <= 10:
     for element in elements:
         entries.append(element.text) # Gönderileri sakla
         print(element.text) # Gönderileri yazdır
-    print("--------------------------------") # Sayfa numarasını yazdır
+    print("--------------------------------") # Sayfa numarasını yazdir
     print(f"Sayfa {pageCount} gönderileri alındı")
     pageCount += 1 # Sayfa numarasını artır
 print("--------------------------------")
