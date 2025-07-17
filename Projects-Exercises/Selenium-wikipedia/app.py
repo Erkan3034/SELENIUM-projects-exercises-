@@ -8,19 +8,11 @@ url = "https://tr.wikipedia.org/wiki/%C4%B0stanbul"  # İstanbul sayfasının UR
 
 
 
-<<<<<<< HEAD
-browser.get(url) # Sayfayı aç (Sayfayı açıyoruz) 
+browser.get(url) # Sayfayı aç
 
-time.sleep(5) # 5 saniye bekle (5 saniye bekliyoruz)
+time.sleep(5) # 5 saniye bekle
 
-elements = browser.find_elements(By.CSS_SELECTOR, "div.mw-heading.mw-heading3 > h3") # h3 etiketini seç (h3 etiketini seçiyoruz)
-=======
-browser.get(url) # Sayfayı aç.
-
-time.sleep(5) # 10 saniye bekle sayfadayken
-
-elements = browser.find_elements(By.CSS_SELECTOR, "div.mw-heading.mw-heading3 > h3") # verilen class içindeki h3 etiketini seç
->>>>>>> 494e0d2b992bead1034e53f3afedfd671f360f52
+elements = browser.find_elements(By.CSS_SELECTOR, "div.mw-heading.mw-heading3 > h3") # div.mw-heading.mw-heading3 içindeki h3 etiketlerini seç
 
 i = 1    
 print("------------- BASLIKLAR-------------------")
