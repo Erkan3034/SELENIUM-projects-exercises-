@@ -5,25 +5,29 @@ from selenium.webdriver.common.by import By
 browser = webdriver.Chrome()
 
 
-url = "https://eksisozluk.com/istanbul--3210?p=" # İstanbul konuslu gönderileri al
+url = "https://eksisozluk.com/istanbul--32102?p=" # İstanbul konuslu gönderileri al
 
 pageCount = 1
 entries = [] # Gönderileri sakla
 
 while pageCount <= 10:
-    randomPage = random.randint(1, 1341) # Sayfa numarasını rastgele seç
-    newUrl = url + str(randomPage) # Sayfa numarasını rastgele seç(url sonundaki p= sayfa numarası)
-    browser.get(newUrl) # Sayfayı aç
-    time.sleep(3) # 3 saniye bekle
-    elements = browser.find_elements(By.CSS_SELECTOR, ".content")  # content etiketini seç ve listele
+    randomPage = random.randint(1, 1341)
+    newUrl = url + str(randomPage)  # Rastgele yerine sıralı
+    print(f"Gidilen sayfa: {pageCount}")
+    print(browser.current_url)
+    browser.get(newUrl)
+    time.sleep(3)
+    
+    elements = browser.find_elements(By.CSS_SELECTOR, ".content")
     for element in elements:
-        entries.append(element.text) # Gönderileri sakla
-        print(element.text) # Gönderileri yazdır
-    print("--------------------------------") # Sayfa numarasını yazdır
+        entries.append(element.text)
+        print(element.text)
+
+        with open("entries.txt", "a", encoding="utf-8") as file: # entrileri txt dosyasına yaz
+            file.write(element.text + "\n")
+    print("--------------------------------")
     print(f"Sayfa {pageCount} gönderileri alındı")
-    pageCount += 1 # Sayfa numarasını artır
-print("--------------------------------")
-print("Tüm gönderiler alındı")
+    pageCount += 1
 
 
 """

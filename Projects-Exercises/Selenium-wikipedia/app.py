@@ -2,17 +2,17 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
 
-browser = webdriver.Chrome() # Chrome tarayıcısını aç
+browser = webdriver.Chrome() # Chrome tarayıcısını aç (Chrome tarayıcısını kullanıyoruz)
 
-url = "https://tr.wikipedia.org/wiki/%C4%B0stanbul"
+url = "https://tr.wikipedia.org/wiki/%C4%B0stanbul"  # İstanbul sayfasının URL'sini belirliyoruz
 
 
 
-browser.get(url) # Sayfayı aç
+browser.get(url) # Sayfayı aç (Sayfayı açıyoruz) 
 
-time.sleep(5) # 10 saniye bekle 
+time.sleep(5) # 5 saniye bekle (5 saniye bekliyoruz)
 
-elements = browser.find_elements(By.CSS_SELECTOR, "div.mw-heading.mw-heading3 > h3") # h3 etiketini seç
+elements = browser.find_elements(By.CSS_SELECTOR, "div.mw-heading.mw-heading3 > h3") # h3 etiketini seç (h3 etiketini seçiyoruz)
 
 i = 1    
 print("------------- BASLIKLAR-------------------")
