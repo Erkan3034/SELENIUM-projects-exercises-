@@ -6,8 +6,6 @@ browser = webdriver.Chrome() # Chrome tarayıcısını aç (Chrome tarayıcısı
 
 url = "https://tr.wikipedia.org/wiki/%C4%B0stanbul"  # İstanbul sayfasının URL'sini belirliyoruz
 
-
-
 browser.get(url) # Sayfayı aç
 
 time.sleep(5) # 5 saniye bekle
@@ -23,8 +21,6 @@ print("--------------------------------")
     
 browser.close() # Tarayıcıyı kapat
 
-
 """
 Bu kod ile wikipedia sayfsaını açıp İstanbul sayfasının h3 etiketlerini alıyoruz.
-
 """
