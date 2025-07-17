@@ -20,12 +20,18 @@ while pageCount <= 10:
     
     elements = browser.find_elements(By.CSS_SELECTOR, ".content")
     for element in elements:
+<<<<<<< HEAD
         entries.append(element.text)
         print(element.text)
 
         with open("entries.txt", "a", encoding="utf-8") as file: # entrileri txt dosyasına yaz
             file.write(element.text + "\n")
     print("--------------------------------")
+=======
+        entries.append(element.text) # Gönderileri sakla
+        print(element.text) # Gönderileri yazdır
+    print("--------------------------------") # Sayfa numarasını yazdir
+>>>>>>> 494e0d2b992bead1034e53f3afedfd671f360f52
     print(f"Sayfa {pageCount} gönderileri alındı")
     pageCount += 1
 
