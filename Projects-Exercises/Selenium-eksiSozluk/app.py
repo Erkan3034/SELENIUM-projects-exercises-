@@ -15,25 +15,19 @@ while pageCount <= 10:
     newUrl = url + str(randomPage)  # Rastgele yerine sıralı
     print(f"Gidilen sayfa: {pageCount}")
     print(browser.current_url)
-    browser.get(newUrl)
+    browser.get(newUrl) # url'e gidiyoruz
     time.sleep(3)
     
-    elements = browser.find_elements(By.CSS_SELECTOR, ".content")
+    elements = browser.find_elements(By.CSS_SELECTOR, ".content") # content etiketini seç
     for element in elements:
-<<<<<<< HEAD
-        entries.append(element.text)
-        print(element.text)
-
-        with open("entries.txt", "a", encoding="utf-8") as file: # entrileri txt dosyasına yaz
-            file.write(element.text + "\n")
-    print("--------------------------------")
-=======
         entries.append(element.text) # Gönderileri sakla
         print(element.text) # Gönderileri yazdır
-    print("--------------------------------") # Sayfa numarasını yazdir
->>>>>>> 494e0d2b992bead1034e53f3afedfd671f360f52
+
+        with open("entries.txt", "a", encoding="utf-8") as file: # entrileri txt dosyasına ekle(APPEND MODE)
+            file.write(element.text + "\n")
+    print("--------------------------------")
     print(f"Sayfa {pageCount} gönderileri alındı")
-    pageCount += 1
+    pageCount += 1  
 
 
 """
