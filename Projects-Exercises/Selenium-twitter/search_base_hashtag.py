@@ -120,7 +120,7 @@ print("🔑 Şifre giriliyor...")
 
 try:
     sifre_kutusu = browser.find_element(By.XPATH, '//input[@name="password"]')
-    sifre_kutusu.send_keys("sifre")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
+    sifre_kutusu.send_keys("Erkanaslı0512")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
     print("✅ Şifre başarıyla girildi!")
 except NoSuchElementException:
     print("❌ Şifre kutusu bulunamadı! Alternatif yöntemler deneniyor...")
@@ -135,7 +135,7 @@ except NoSuchElementException:
     for xpath in alternatif_sifre_xpaths: # alternatif xpath'ler
         try:
             sifre_kutusu = browser.find_element(By.XPATH, xpath)
-            sifre_kutusu.send_keys("sifre")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
+            sifre_kutusu.send_keys("Erkanaslı0512")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
             print(f"✅ Şifre kutusu alternatif XPATH ile bulundu: {xpath}")
             sifre_bulundu = True
             break
@@ -260,14 +260,18 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
         # Son bir bekleme ile tüm tweet'lerin yüklenmesini bekle
         time.sleep(3)
         
+        # Scroll sonrası toplam tweet sayısını kontrol et
+        final_tweetler = browser.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
+        print(f"📊 Scroll sonrası toplam {len(final_tweetler)} tweet bulundu!")
+        
         # Arama sonuçlarının yüklenip yüklenmediğini kontrol et
         try:
             sonuc_kontrol = browser.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
             if len(sonuc_kontrol) > 0: # tweet bulunduysa
                 print(f"📊 {len(sonuc_kontrol)} tweet bulundu!")
                 
-                # İlk 10 tweet'in içeriğini al ve dosyaya yaz
-                print(f"📝 İlk 10 tweet içeriği alınıyor ve tweets.txt dosyasına yazılıyor...")
+                # Tüm tweet'lerin içeriğini al ve dosyaya yaz
+                print(f"📝 Bulunan tüm tweet'ler tweets.txt dosyasına yazılıyor...")
                 
                 # Dosyaya hashtag başlığı ekle
                 with open("tweets.txt", "a", encoding="utf-8") as file:
@@ -278,7 +282,7 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                 
                 # Tweet içeriklerini almak için alternatif yöntemler deneyelim
                 tweet_sayisi = 0
-                max_tweet = 10
+                # max_tweet limitini kaldırıyoruz - tüm tweet'leri al
                 
                 # Birinci yöntem: Twitter'ın resmi tweet seçicileri
                 try:
@@ -298,9 +302,9 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                         print(f"✅ div tweetText seçici ile {len(tweet_elementleri)} tweet bulundu")
                     
                     if tweet_elementleri:
-                        print(f"📝 İlk {min(max_tweet, len(tweet_elementleri))} element kontrol ediliyor...")
+                        print(f"📝 Toplam {len(tweet_elementleri)} tweet kontrol ediliyor...")
                         
-                        for j, tweet in enumerate(tweet_elementleri[:max_tweet], 1):
+                        for j, tweet in enumerate(tweet_elementleri, 1):
                             try:
                                 tweet_metni = tweet.text.strip()
                                 
@@ -353,8 +357,9 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                             tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, selector)
                             if tweet_elementleri:
                                 print(f"✅ Alternatif selector ile {len(tweet_elementleri)} tweet bulundu: {selector}")
+                                print(f"📝 Toplam {len(tweet_elementleri)} tweet kontrol ediliyor...")
                                 
-                                for j, tweet in enumerate(tweet_elementleri[:max_tweet], tweet_sayisi + 1):
+                                for j, tweet in enumerate(tweet_elementleri, tweet_sayisi + 1):
                                     try:
                                         tweet_metni = tweet.text.strip()
                                         if tweet_metni and len(tweet_metni) > 10:  # Çok kısa olanları atla
@@ -365,9 +370,6 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                                             
                                             print(f"✅ Tweet {j} kaydedildi")
                                             tweet_sayisi += 1
-                                            
-                                            if tweet_sayisi >= max_tweet:
-                                                break
                                     except Exception as e:
                                         continue
                                 break  # Başarılı selector bulundu, döngüyü kır
