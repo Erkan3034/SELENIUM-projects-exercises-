@@ -78,7 +78,7 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
             try:
                 arama_kutusu = browser.find_element(By.XPATH, alt_xpath)
                 arama_kutusu.clear()
-                arama_kutusu.send_keys(hashtag)
+                arama_kutusu.send_keys(hashtag) 
                 arama_kutusu.send_keys(Keys.RETURN)
                 print(f"✅ Alternatif yöntemle '{hashtag}' arandı!")
                 bulundu = True

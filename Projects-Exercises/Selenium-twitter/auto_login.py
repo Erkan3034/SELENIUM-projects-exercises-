@@ -97,7 +97,7 @@ print("Şifre kutusunu arıyor...")
 
 try:
     sifre_kutusu = browser.find_element(By.XPATH, '//input[@name="password"]')
-    sifre_kutusu.send_keys("sifre")  # Şifrenizi buraya yazın
+    sifre_kutusu.send_keys("sifre")  # şifre kutusunu doldur
     print("Şifre başarıyla girildi!")
 except NoSuchElementException:
     print("Şifre kutusu bulunamadı! Altrnatif yöntemler deneniyor...")
