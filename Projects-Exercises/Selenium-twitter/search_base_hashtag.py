@@ -180,10 +180,6 @@ print("\n🔍 HASHTAG ARAMA İŞLEMİ BAŞLIYOR...")
 # Aranacak hashtag'leri listele (istediğiniz gibi değiştirebilirsiniz)
 hashtag_listesi = [
     "#python",
-    "#javascript", 
-    "#teknoloji",
-    "#yapayZeka",
-    "#selenium"
 ]
 
 print(f"📋 {len(hashtag_listesi)} hashtag aranacak: {hashtag_listesi}")
