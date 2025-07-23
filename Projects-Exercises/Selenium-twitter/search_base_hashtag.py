@@ -40,7 +40,7 @@ time.sleep(3)
 try:
     # Önce genel input arayalım
     kullanici_adi_kutusu = browser.find_element(By.XPATH, '//input[@name="text"]')
-    kullanici_adi_kutusu.send_keys("Erkan_0630")  #kullanıcı adı 
+    kullanici_adi_kutusu.send_keys("sifre")  #kullanıcı adı 
     print("✅ Kullanıcı adı başarıyla girildi!")
 except NoSuchElementException:
     print("❌ Kullanıcı adı kutusu bulunamadı! Alternatif yöntemler deneniyor...")
@@ -67,7 +67,7 @@ except NoSuchElementException:
         try:
             print(f"🔍 Alternatif {i}/{len(alternatif_xpaths)} deneniyor: {xpath[:50]}...")
             kullanici_adi_kutusu = browser.find_element(By.XPATH, xpath)
-            kullanici_adi_kutusu.send_keys("Erkan_0630")  #kullanıcı adı 
+            kullanici_adi_kutusu.send_keys("sifre")  #kullanıcı adı 
             print(f"✅ Alternatif XPATH ile başarılı: {xpath}")
             element_bulundu = True
             break
