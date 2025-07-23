@@ -378,6 +378,60 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                 
                 if tweet_sayisi > 0:
                     print(f"🎉 Toplam {tweet_sayisi} tweet tweets.txt dosyasına kaydedildi!")
+                    
+                    # Tweet'leri beğenme işlemi başlat
+                    print(f"\n❤️ TWEET BEĞENİ İŞLEMİ BAŞLIYOR...")
+                    print(f"🎯 Bulunan tweet'ler beğenilecek...")
+                    
+                    # Beğenme butonlarını bul (sadece tweet içindekiler)
+                    like_buttons = browser.find_elements(By.CSS_SELECTOR, 'article[data-testid="tweet"] [data-testid="like"]')
+                    print(f"🔍 {len(like_buttons)} tweet beğenme butonu bulundu!")
+                    
+                    # Maksimum beğeni sayısı belirleme (spam koruması)
+                    max_like = min(len(like_buttons), 20)  # En fazla 20 tweet beğen
+                    print(f"🎯 İlk {max_like} tweet beğenilecek (spam koruması)")
+                    
+                    begeni_sayisi = 0
+                    
+                    for like_index, like_button in enumerate(like_buttons[:max_like], 1):
+                        try:
+                            # Butonun görünür olup olmadığını kontrol et
+                            if like_button.is_displayed() and like_button.is_enabled():
+                                # Butona scroll et (görünür alan içinde olması için)
+                                browser.execute_script("arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", like_button)
+                                time.sleep(1.5)
+                                
+                                # Daha önce beğenilmiş mi kontrol et (kırmızı kalp)
+                                try:
+                                    # Beğenilmişse aria-label'da "Liked" yazar
+                                    aria_label = like_button.get_attribute("aria-label")
+                                    if "Liked" in aria_label or "liked" in aria_label:
+                                        print(f"💙 Tweet {like_index} zaten beğenilmiş, atlandı")
+                                        continue
+                                except:
+                                    pass  # Aria-label kontrolü başarısızsa devam et
+                                
+                                # Beğenme butonuna tıkla
+                                like_button.click()
+                                begeni_sayisi += 1
+                                print(f"❤️ Tweet {like_index} beğenildi! (Toplam: {begeni_sayisi})")
+                                
+                                # Twitter spam koruması için bekleme (rastgele 2-4 saniye)
+                                import random
+                                wait_time = random.uniform(2, 4)
+                                time.sleep(wait_time)
+                                
+                            else:
+                                print(f"⚠️ Beğenme butonu {like_index} görünür değil, atlandı")
+                                
+                        except Exception as e:
+                            print(f"❌ Tweet {like_index} beğenilemedi: {e}")
+                            continue
+                    
+                    print(f"🎉 Beğeni işlemi tamamlandı! {begeni_sayisi} tweet beğenildi!")
+                    print(f"⏳ Sonraki hashtag için 5 saniye bekleniyor...")
+                    time.sleep(5)  # Hashtag'lar arası daha uzun bekleme
+                    
                 else:
                     print("❌ Hiç tweet içeriği alınamadı!")
                     
