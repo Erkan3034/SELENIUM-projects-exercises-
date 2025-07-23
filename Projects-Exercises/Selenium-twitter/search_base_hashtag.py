@@ -255,6 +255,7 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
         time.sleep(3)
 
 print("\n🎉 Tüm hashtag aramaları tamamlandı!")
+browser.back() # geri dön
 print("🔍 Tarayıcıyı kapatmak için 10 saniye bekleniyor...") 
 time.sleep(10)
 
