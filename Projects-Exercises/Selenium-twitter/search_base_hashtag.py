@@ -222,6 +222,44 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
         # Arama sonuçları yüklensin diye bekle
         time.sleep(5)
         
+        # Sayfayı scroll down yaparak daha fazla tweet yükle
+        print("📜 Daha fazla tweet yüklemek için sayfayı scroll ediliyor...")
+        
+        # Akıllı scroll - tweet sayısı artana kadar scroll yap
+        onceki_tweet_sayisi = 0
+        scroll_step = 0
+        max_scroll = 8  # Maksimum scroll sayısı
+        
+        while scroll_step < max_scroll:
+            scroll_step += 1
+            print(f"   🔄 Scroll adımı {scroll_step}/{max_scroll}")
+            
+            # Mevcut tweet sayısını kontrol et
+            mevcut_tweetler = browser.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
+            mevcut_tweet_sayisi = len(mevcut_tweetler)
+            print(f"   📊 Mevcut tweet sayısı: {mevcut_tweet_sayisi}")
+            
+            # Sayfanın sonuna scroll yap
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+            
+            # Biraz daha aşağı scroll yap (infinite scroll için)
+            browser.execute_script("window.scrollBy(0, 1000);")
+            time.sleep(3)
+            
+            # Tweet sayısı artmadıysa 2 adım daha scroll yap, sonra dur
+            if mevcut_tweet_sayisi == onceki_tweet_sayisi:
+                if scroll_step >= 3:  # En az 3 scroll yaptıysa dur
+                    print(f"   ⏸️ Tweet sayısı artmıyor, scroll durduruluyor")
+                    break
+            else:
+                onceki_tweet_sayisi = mevcut_tweet_sayisi
+        
+        print("✅ Scroll işlemi tamamlandı! Yeni tweet'ler yüklendi.")
+        
+        # Son bir bekleme ile tüm tweet'lerin yüklenmesini bekle
+        time.sleep(3)
+        
         # Arama sonuçlarının yüklenip yüklenmediğini kontrol et
         try:
             sonuc_kontrol = browser.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
@@ -375,10 +413,12 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
             print(f"❌ '{hashtag}' araması yapılamadı!")
             continue
     
-    # Sonraki aramaya geçmeden önce bekle
-    if i < len(hashtag_listesi):  # Son arama değilse
-        print(f"⏳ Sonraki arama için 3 saniye bekleniyor...")
-        time.sleep(3)
+            # Sonraki aramaya geçmeden önce bekle
+        if i < len(hashtag_listesi):  # Son arama değilse
+            print(f"⏳ Sonraki arama için 3 saniye bekleniyor...")
+            # Sayfayı en üste scroll et (sonraki arama için)
+            browser.execute_script("window.scrollTo(0, 0);")
+            time.sleep(3)
 
 print("\n🎉 Tüm hashtag aramaları tamamlandı!")
 browser.back() # geri dön
