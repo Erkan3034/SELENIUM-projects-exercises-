@@ -211,10 +211,93 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
             sonuc_kontrol = browser.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
             if len(sonuc_kontrol) > 0: # tweet bulunduysa
                 print(f"📊 {len(sonuc_kontrol)} tweet bulundu!")
+                
+                # İlk 10 tweet'in içeriğini al ve dosyaya yaz
+                print(f"📝 İlk 10 tweet içeriği alınıyor ve tweets.txt dosyasına yazılıyor...")
+                
+                # Dosyaya hashtag başlığı ekle
+                with open("tweets.txt", "a", encoding="utf-8") as file:
+                    file.write(f"\n{'='*50}\n")
+                    file.write(f"HASHTAG: {hashtag}\n")
+                    file.write(f"ARAMA TARİHİ: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+                    file.write(f"{'='*50}\n\n")
+                
+                # Tweet içeriklerini almak için alternatif yöntemler deneyelim
+                tweet_sayisi = 0
+                max_tweet = 10
+                
+                # Birinci yöntem: Verdiğiniz XPATH
+                try:
+                    tweet_elementleri = browser.find_elements(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div[5]/section/div/div/div[3]/div/div/article/div/div/div[2]/div[2]/div[2]')
+                    
+                    if tweet_elementleri:
+                        print(f"✅ Verdiğiniz XPATH ile {len(tweet_elementleri)} tweet bulundu!")
+                        
+                        for j, tweet in enumerate(tweet_elementleri[:max_tweet], 1):
+                            try:
+                                tweet_metni = tweet.text.strip()
+                                if tweet_metni:  # Boş değilse
+                                    with open("tweets.txt", "a", encoding="utf-8") as file:
+                                        file.write(f"Tweet {j}:\n")
+                                        file.write(f"{tweet_metni}\n")
+                                        file.write("-" * 30 + "\n\n")
+                                    
+                                    print(f"✅ Tweet {j} kaydedildi")
+                                    tweet_sayisi += 1
+                            except Exception as e:
+                                print(f"⚠️ Tweet {j} alınırken hata: {e}")
+                                continue
+                    else:
+                        print("⚠️ Verdiğiniz XPATH ile tweet bulunamadı, alternatif yöntemler deneniyor...")
+                        raise Exception("XPATH bulunamadı")
+                        
+                except Exception:
+                    # İkinci yöntem: Genel tweet seçicileri
+                    print("🔄 Alternatif tweet seçicileri deneniyor...")
+                    
+                    alternatif_selectors = [
+                        '[data-testid="tweetText"]',
+                        '[data-testid="tweet"] div[lang]',
+                        'article div[data-testid="tweetText"]',
+                        'div[data-testid="tweetText"] span',
+                        'article [role="group"] + div div[lang]'
+                    ]
+                    
+                    for selector in alternatif_selectors:
+                        try:
+                            tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, selector)
+                            if tweet_elementleri:
+                                print(f"✅ Alternatif selector ile {len(tweet_elementleri)} tweet bulundu: {selector}")
+                                
+                                for j, tweet in enumerate(tweet_elementleri[:max_tweet], tweet_sayisi + 1):
+                                    try:
+                                        tweet_metni = tweet.text.strip()
+                                        if tweet_metni and len(tweet_metni) > 10:  # Çok kısa olanları atla
+                                            with open("tweets.txt", "a", encoding="utf-8") as file:
+                                                file.write(f"Tweet {j}:\n")
+                                                file.write(f"{tweet_metni}\n")
+                                                file.write("-" * 30 + "\n\n")
+                                            
+                                            print(f"✅ Tweet {j} kaydedildi")
+                                            tweet_sayisi += 1
+                                            
+                                            if tweet_sayisi >= max_tweet:
+                                                break
+                                    except Exception as e:
+                                        continue
+                                break  # Başarılı selector bulundu, döngüyü kır
+                        except Exception:
+                            continue
+                
+                if tweet_sayisi > 0:
+                    print(f"🎉 Toplam {tweet_sayisi} tweet tweets.txt dosyasına kaydedildi!")
+                else:
+                    print("❌ Hiç tweet içeriği alınamadı!")
+                    
             else:
                 print("⚠️ Tweet bulunamadı veya henüz yüklenmedi")
-        except:
-            print("⚠️ Sonuç kontrolü yapılamadı")
+        except Exception as e:
+            print(f"⚠️ Sonuç kontrolü yapılamadı: {e}")
             
     except NoSuchElementException:
         print(f"❌ Arama kutusu bulunamadı! Alternatif yöntemler deneniyor...")
