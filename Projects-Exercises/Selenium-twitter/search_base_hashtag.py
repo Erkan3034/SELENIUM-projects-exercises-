@@ -120,7 +120,7 @@ print("🔑 Şifre giriliyor...")
 
 try:
     sifre_kutusu = browser.find_element(By.XPATH, '//input[@name="password"]')
-    sifre_kutusu.send_keys("Erkanaslı0512")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
+    sifre_kutusu.send_keys("sifre")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
     print("✅ Şifre başarıyla girildi!")
 except NoSuchElementException:
     print("❌ Şifre kutusu bulunamadı! Alternatif yöntemler deneniyor...")
@@ -135,7 +135,7 @@ except NoSuchElementException:
     for xpath in alternatif_sifre_xpaths: # alternatif xpath'ler
         try:
             sifre_kutusu = browser.find_element(By.XPATH, xpath)
-            sifre_kutusu.send_keys("Erkanaslı0512")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
+            sifre_kutusu.send_keys("sifre")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
             print(f"✅ Şifre kutusu alternatif XPATH ile bulundu: {xpath}")
             sifre_bulundu = True
             break
@@ -240,11 +240,11 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
             print(f"   📊 Mevcut tweet sayısı: {mevcut_tweet_sayisi}")
             
             # Sayfanın sonuna scroll yap
-            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);") # sayfanın sonuna scroll yap 
             time.sleep(2)
             
             # Biraz daha aşağı scroll yap (infinite scroll için)
-            browser.execute_script("window.scrollBy(0, 1000);")
+            browser.execute_script("window.scrollBy(0, 1000);") # biraz daha aşağı scroll yap
             time.sleep(3)
             
             # Tweet sayısı artmadıysa 2 adım daha scroll yap, sonra dur
