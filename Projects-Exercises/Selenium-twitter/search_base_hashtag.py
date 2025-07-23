@@ -30,12 +30,16 @@ except NoSuchElementException:
     browser.quit()
     exit()
 
-time.sleep(5)
+time.sleep(8)  # Daha uzun bekle
 
 # Kullanıcı adı girişi
 print("👤 Kullanıcı adı giriliyor...")
+print("⏳ Sayfa tam yüklenmesi için bekle...")
+time.sleep(3)
+
 try:
-    kullanici_adi_kutusu = browser.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div/main/div/div/div/div[2]/div[2]/div/div[4]/label/div/div[2]/div/input')
+    # Önce genel input arayalım
+    kullanici_adi_kutusu = browser.find_element(By.XPATH, '//input[@name="text"]')
     kullanici_adi_kutusu.send_keys("Erkan_0630")  #kullanıcı adı 
     print("✅ Kullanıcı adı başarıyla girildi!")
 except NoSuchElementException:
@@ -45,18 +49,30 @@ except NoSuchElementException:
         '//input[@name="text"]',
         '//input[@autocomplete="username"]',
         '//input[contains(@placeholder, "kullanıcı")]',
-        '//input[contains(@placeholder, "username")]'
+        '//input[contains(@placeholder, "username")]',
+        '//input[contains(@placeholder, "Phone")]',
+        '//input[contains(@placeholder, "email")]',
+        '//input[@data-testid="ocfEnterTextTextInput"]',
+        '//input[@type="text"]',
+        '//label//input',
+        '//div[@role="textbox"]',
+        '//input[contains(@class, "r-30o5oe")]',
+        '//input[contains(@class, "r-homxoj")]',
+        '//*[@data-testid="LoginForm_Login_Input"]//input',
+        '//div[contains(@class, "css-1dbjc4n")]//input[@type="text"]'
     ]
     
     element_bulundu = False
-    for xpath in alternatif_xpaths:
+    for i, xpath in enumerate(alternatif_xpaths, 1):
         try:
+            print(f"🔍 Alternatif {i}/{len(alternatif_xpaths)} deneniyor: {xpath[:50]}...")
             kullanici_adi_kutusu = browser.find_element(By.XPATH, xpath)
             kullanici_adi_kutusu.send_keys("Erkan_0630")  #kullanıcı adı 
             print(f"✅ Alternatif XPATH ile başarılı: {xpath}")
             element_bulundu = True
             break
         except NoSuchElementException:
+            print(f"   ❌ Çalışmadı")
             continue
     
     if not element_bulundu:
@@ -226,17 +242,33 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                 tweet_sayisi = 0
                 max_tweet = 10
                 
-                # Birinci yöntem: Verdiğiniz XPATH
+                # Birinci yöntem: Daha spesifik css-1jxf684 seçicisi
                 try:
-                    tweet_elementleri = browser.find_elements(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div[5]/section/div/div/div[3]/div/div/article/div/div/div[2]/div[2]/div[2]')
+                    # Önce sadece tweet içindeki css-1jxf684 elementlerini dene
+                    tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, 'article .css-1jxf684')
+                    
+                    if not tweet_elementleri:
+                        # Eğer bulamazsa genel css-1jxf684 kullan
+                        tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, '.css-1jxf684')
+                        print(f"✅ Genel css-1jxf684 class'ı ile {len(tweet_elementleri)} element bulundu")
+                    else:
+                        print(f"✅ Spesifik article .css-1jxf684 ile {len(tweet_elementleri)} tweet bulundu!")
                     
                     if tweet_elementleri:
-                        print(f"✅ Verdiğiniz XPATH ile {len(tweet_elementleri)} tweet bulundu!")
+                        print(f"📝 İlk {min(max_tweet, len(tweet_elementleri))} element kontrol ediliyor...")
                         
                         for j, tweet in enumerate(tweet_elementleri[:max_tweet], 1):
                             try:
                                 tweet_metni = tweet.text.strip()
-                                if tweet_metni:  # Boş değilse
+                                
+                                # Debug: Her elementin durumunu kontrol et
+                                print(f"🔍 Element {j} kontrol ediliyor...")
+                                print(f"   Text uzunluğu: {len(tweet_metni)} karakter")
+                                
+                                if tweet_metni and len(tweet_metni) > 15:  # En az 15 karakter olsun
+                                    # Debug: İlk 50 karakteri göster
+                                    print(f"   İçerik önizleme: {tweet_metni[:50]}...")
+                                    
                                     with open("tweets.txt", "a", encoding="utf-8") as file:
                                         file.write(f"Tweet {j}:\n")
                                         file.write(f"{tweet_metni}\n")
@@ -244,23 +276,31 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                                     
                                     print(f"✅ Tweet {j} kaydedildi")
                                     tweet_sayisi += 1
+                                else:
+                                    if len(tweet_metni) == 0:
+                                        print(f"   ⚠️ Element {j} boş")
+                                    else:
+                                        print(f"   ⚠️ Element {j} çok kısa: '{tweet_metni}'")
+                                        
                             except Exception as e:
                                 print(f"⚠️ Tweet {j} alınırken hata: {e}")
                                 continue
                     else:
-                        print("⚠️ Verdiğiniz XPATH ile tweet bulunamadı, alternatif yöntemler deneniyor...")
-                        raise Exception("XPATH bulunamadı")
+                        print("⚠️ css-1jxf684 class'ı ile tweet bulunamadı, alternatif yöntemler deneniyor...")
+                        raise Exception("CSS class bulunamadı")
                         
                 except Exception:
                     # İkinci yöntem: Genel tweet seçicileri
                     print("🔄 Alternatif tweet seçicileri deneniyor...")
                     
                     alternatif_selectors = [
-                        '[data-testid="tweetText"]',
-                        '[data-testid="tweet"] div[lang]',
-                        'article div[data-testid="tweetText"]',
-                        'div[data-testid="tweetText"] span',
-                        'article [role="group"] + div div[lang]'
+                        '[data-testid="tweetText"]',  # En güvenilir
+                        'article div[data-testid="tweetText"]',  # Tweet içindeki metin
+                        'div[data-testid="tweetText"] span',  # Span içindeki metin
+                        '[data-testid="tweet"] div[lang]',  # Dil attribute'lu div
+                        'article .css-1jxf684',  # Spesifik css class
+                        '.css-1jxf684',  # Genel css class
+                        'article [role="group"] + div div[lang]'  # En son çare
                     ]
                     
                     for selector in alternatif_selectors:
