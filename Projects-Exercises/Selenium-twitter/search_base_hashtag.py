@@ -242,17 +242,22 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                 tweet_sayisi = 0
                 max_tweet = 10
                 
-                # Birinci yöntem: Daha spesifik css-1jxf684 seçicisi
+                # Birinci yöntem: Twitter'ın resmi tweet seçicileri
                 try:
-                    # Önce sadece tweet içindeki css-1jxf684 elementlerini dene
-                    tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, 'article .css-1jxf684')
+                    # Önce Twitter'ın resmi tweetText seçicisini dene
+                    tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, '[data-testid="tweetText"]')
                     
                     if not tweet_elementleri:
-                        # Eğer bulamazsa genel css-1jxf684 kullan
-                        tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, '.css-1jxf684')
-                        print(f"✅ Genel css-1jxf684 class'ı ile {len(tweet_elementleri)} element bulundu")
+                        # Tweet içindeki tweetText
+                        tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, 'article[data-testid="tweet"] [data-testid="tweetText"]')
+                        print(f"✅ Article tweetText seçici ile {len(tweet_elementleri)} tweet bulundu")
                     else:
-                        print(f"✅ Spesifik article .css-1jxf684 ile {len(tweet_elementleri)} tweet bulundu!")
+                        print(f"✅ tweetText seçici ile {len(tweet_elementleri)} tweet bulundu!")
+                    
+                    if not tweet_elementleri:
+                        # div içindeki tweetText
+                        tweet_elementleri = browser.find_elements(By.CSS_SELECTOR, 'div[data-testid="tweetText"]')
+                        print(f"✅ div tweetText seçici ile {len(tweet_elementleri)} tweet bulundu")
                     
                     if tweet_elementleri:
                         print(f"📝 İlk {min(max_tweet, len(tweet_elementleri))} element kontrol ediliyor...")
@@ -286,21 +291,23 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                                 print(f"⚠️ Tweet {j} alınırken hata: {e}")
                                 continue
                     else:
-                        print("⚠️ css-1jxf684 class'ı ile tweet bulunamadı, alternatif yöntemler deneniyor...")
-                        raise Exception("CSS class bulunamadı")
+                        print("⚠️ tweetText seçicileri ile tweet bulunamadı, alternatif yöntemler deneniyor...")
+                        raise Exception("tweetText seçicileri bulunamadı")
                         
                 except Exception:
                     # İkinci yöntem: Genel tweet seçicileri
                     print("🔄 Alternatif tweet seçicileri deneniyor...")
                     
                     alternatif_selectors = [
-                        '[data-testid="tweetText"]',  # En güvenilir
-                        'article div[data-testid="tweetText"]',  # Tweet içindeki metin
-                        'div[data-testid="tweetText"] span',  # Span içindeki metin
+                        '[data-testid="tweetText"]',  # En güvenilir - Twitter'ın resmi seçicisi
+                        'article[data-testid="tweet"] [data-testid="tweetText"]',  # Spesifik tweet içindeki text
+                        'div[data-testid="tweetText"]',  # div içindeki tweetText
+                        'div[data-testid="tweetText"] span',  # tweetText içindeki span
                         '[data-testid="tweet"] div[lang]',  # Dil attribute'lu div
-                        'article .css-1jxf684',  # Spesifik css class
-                        '.css-1jxf684',  # Genel css class
-                        'article [role="group"] + div div[lang]'  # En son çare
+                        'article div[lang]',  # Article içindeki dil div'i
+                        'span.css-1jxf684',  # CSS class - daha az güvenilir
+                        'article .css-1jxf684',  # Article içindeki css class
+                        '.css-1jxf684'  # En son çare - çok genel
                     ]
                     
                     for selector in alternatif_selectors:

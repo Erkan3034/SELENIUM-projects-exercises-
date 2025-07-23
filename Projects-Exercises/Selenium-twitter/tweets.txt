@@ -1,13 +1,12 @@
-
 ==================================================
 HASHTAG: #python
-ARAMA TARİHİ: 2025-07-23 22:04:06
+ARAMA TARİHİ: 2025-07-23 22:33:50
 ==================================================
 
 Tweet 1:
-AI vs. ML vs. Deep Learning
-
-#python #datascience #machinelearning #deeplearning #ai #artificialintelligence #programming #developer #softwaredeveloper #computerscience #calculus #linearalgebra #algebra #maths #mathematics
+9 Must - Know Python Pandas Operations for Working with Data.
+Image Credit- Brij Kishore Pandey
+#python #pythonprogramming
 ------------------------------
 
 Tweet 2:
@@ -18,17 +17,8 @@ Best ML Courses- https://mltut.com/best-free-online-courses-for-machine-learning
 #MachineLearning #DeepLearning #BigData #Datascience #ML #HealthTech #DataVisualization #ArtificialInteligence #SoftwareEngineering #GenAI #deeplearning #ChatGPT #OpenAI #python #AI #keras #SQL
 ------------------------------
 
-
-==================================================
-HASHTAG: #python
-ARAMA TARİHİ: 2025-07-23 22:11:08
-==================================================
-
-Tweet 1:
-To view keyboard shortcuts, press question mark
-------------------------------
-
-Tweet 6:
-10
+Tweet 3:
+Top Books You Must Read! #BigData #Analytics #DataScience #IoT #IIoT #PyTorch #Python #RStats #TensorFlow #Java #JavaScript #ReactJS #GoLang #CloudComputing #Serverless #DataScientist #Linux #Books #Programming #Coding #100DaysofCode  
+https://geni.us/15-DSci-Books
 ------------------------------
 
