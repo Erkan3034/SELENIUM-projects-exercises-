@@ -120,7 +120,7 @@ print("🔑 Şifre giriliyor...")
 
 try:
     sifre_kutusu = browser.find_element(By.XPATH, '//input[@name="password"]')
-    sifre_kutusu.send_keys("Erkanaslı0512")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
+    sifre_kutusu.send_keys("sifre")  # şifre
     print("✅ Şifre başarıyla girildi!")
 except NoSuchElementException:
     print("❌ Şifre kutusu bulunamadı! Alternatif yöntemler deneniyor...")
@@ -135,7 +135,7 @@ except NoSuchElementException:
     for xpath in alternatif_sifre_xpaths: # alternatif xpath'ler
         try:
             sifre_kutusu = browser.find_element(By.XPATH, xpath)
-            sifre_kutusu.send_keys("Erkanaslı0512")  # ← BURAYA KENDİ ŞİFRENİZİ YAZIN
+            sifre_kutusu.send_keys("sifre")  # şifre
             print(f"✅ Şifre kutusu alternatif XPATH ile bulundu: {xpath}")
             sifre_bulundu = True
             break
@@ -153,7 +153,7 @@ print("🚪 Giriş butonuna tıklanıyor...")
 
 try:
     giris_butonu = browser.find_element(By.XPATH, '//button[contains(@role, "button")]//span[text()="Giriş yap" or text()="Log in"]/..')
-    giris_butonu.click()
+    giris_butonu.click() # giriş butonuna tıkla
     print("✅ Giriş butonuna başarıyla tıklandı!")
 except NoSuchElementException:
     print("❌ Giriş butonu bulunamadı! Alternatif yöntemler deneniyor...")
@@ -201,8 +201,8 @@ hashtag_listesi = [
 print(f"📋 {len(hashtag_listesi)} hashtag aranacak: {hashtag_listesi}")
 
 # Her hashtag için arama yap
-for i, hashtag in enumerate(hashtag_listesi, 1):
-    print(f"\n--- {i}. ARAMA: {hashtag} ---")
+for i, hashtag in enumerate(hashtag_listesi, 1):  # hashtag listesini 1'den başlatıp indexlerini de al
+    print(f"\n--- {i}. ARAMA: {hashtag} ---")  # hashtag listesini yazdır
     
     try:
         # Arama kutusunu bul (verdiğiniz XPATH)
@@ -226,9 +226,9 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
         print("📜 Daha fazla tweet yüklemek için sayfayı scroll ediliyor...")
         
         # Akıllı scroll - tweet sayısı artana kadar scroll yap
-        onceki_tweet_sayisi = 0
-        scroll_step = 0
-        max_scroll = 8  # Maksimum scroll sayısı
+        onceki_tweet_sayisi = 0 # bir önceki tweet sayısı
+        scroll_step = 0 # scroll adımı
+        max_scroll = 8  # maksimum scroll sayısı 
         
         while scroll_step < max_scroll:
             scroll_step += 1
@@ -241,7 +241,7 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
             
             # Sayfanın sonuna scroll yap
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);") # sayfanın sonuna scroll yap 
-            time.sleep(2)
+            time.sleep(2) # 2 saniye bekle
             
             # Biraz daha aşağı scroll yap (infinite scroll için)
             browser.execute_script("window.scrollBy(0, 1000);") # biraz daha aşağı scroll yap
@@ -268,10 +268,10 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
         try:
             sonuc_kontrol = browser.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
             if len(sonuc_kontrol) > 0: # tweet bulunduysa
-                print(f"📊 {len(sonuc_kontrol)} tweet bulundu!")
+                print(f"{len(sonuc_kontrol)} tweet bulundu!")
                 
                 # Tüm tweet'lerin içeriğini al ve dosyaya yaz
-                print(f"📝 Bulunan tüm tweet'ler tweets.txt dosyasına yazılıyor...")
+                print(f" Bulunan tüm tweet'ler tweets.txt dosyasına yazılıyor...")
                 
                 # Dosyaya hashtag başlığı ekle
                 with open("tweets.txt", "a", encoding="utf-8") as file:
@@ -419,7 +419,7 @@ for i, hashtag in enumerate(hashtag_listesi, 1):
                                 # Twitter spam koruması için bekleme (rastgele 2-4 saniye)
                                 import random
                                 wait_time = random.uniform(2, 4)
-                                time.sleep(wait_time)
+                                time.sleep(wait_time) 
                                 
                             else:
                                 print(f"⚠️ Beğenme butonu {like_index} görünür değil, atlandı")
