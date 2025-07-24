@@ -13,7 +13,7 @@ print("📝 İlk önce Twitter'a giriş yapacağız, sonra hashtag araması yapa
 browser = webdriver.Chrome()
 
 # Twitter/X ana sayfasına git
-url = "https://x.com/"
+url = "https://x.com/" 
 print(f"📱 {url} adresine gidiliyor...")
 browser.get(url)
 time.sleep(2)
