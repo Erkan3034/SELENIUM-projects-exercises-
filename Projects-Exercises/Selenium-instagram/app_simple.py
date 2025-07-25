@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 import time
 import loginInfo
 
-print("📸 Instagram Takipçi Listeleme Botu (Basit Versiyon) Başlatılıyor...")
+print("📸 Instagram Takipçi Listeleme Botu (İlk 50 Takipçi) Başlatılıyor...")
 
 # Firefox yerine Chrome kullanacağız (daha stabil)
 browser = webdriver.Chrome()
@@ -96,27 +96,21 @@ try:
     return followersModal.scrollHeight || document.body.scrollHeight;
     """
     
-    # Infinite scroll - tüm takipçiler yüklenene kadar
+    # Sınırlı scroll - sadece ilk 50 takipçi için yeterli
     len_of_page = browser.execute_script(js_scroll_command)
-    match = False
     scroll_count = 0
-    max_scrolls = 50  # Maksimum scroll sayısı
+    max_scrolls = 5  # Daha az scroll - ilk 50 takipçi için yeterli
     
-    while not match and scroll_count < max_scrolls:
+    while scroll_count < max_scrolls:
         scroll_count += 1
-        print(f"   📜 Scroll {scroll_count}/{max_scrolls} - Sayfa yüksekliği: {len_of_page}")
+        print(f"   📜 Scroll {scroll_count}/{max_scrolls} - İlk 50 takipçi için yükleniyor...")
         
-        last_count = len_of_page
         time.sleep(2)  # Bekleme süresi
         len_of_page = browser.execute_script(js_scroll_command)
         
-        if last_count == len_of_page:
-            print(f"   ✅ Scroll tamamlandı! (Sayfa yüksekliği değişmedi)")
-            match = True
-        
-        # Ekstra güvenlik: çok fazla scroll'da dur
+        # 5 scroll yap ve dur
         if scroll_count >= max_scrolls:
-            print(f"   ⚠️ Maksimum scroll sayısına ulaşıldı")
+            print(f"   ✅ İlk 50 takipçi için yeterli scroll tamamlandı")
             break
     
     time.sleep(3)  # Final yükleme için bekle
@@ -166,9 +160,10 @@ try:
             print(f"   ❌ Selector {i} başarısız: {e}")
             continue
     
-    # Dosyaya yaz
+    # Takipçi listesini ilk 50 ile sınırla
     if followers_list:
-        print(f"💾 {len(followers_list)} takipçi 'followers.txt' dosyasına yazılıyor...")
+        followers_list = followers_list[:50]  # Sadece ilk 50 takipçi
+        print(f"💾 İlk {len(followers_list)} takipçi 'followers.txt' dosyasına yazılıyor...")
         
         with open("followers.txt", "w", encoding="UTF-8") as file:
             file.write(f"INSTAGRAM TAKİPÇİ LİSTESİ - {loginInfo.username}\n")
